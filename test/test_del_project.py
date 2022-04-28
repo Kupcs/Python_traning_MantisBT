@@ -1,13 +1,15 @@
 from model.project import Project
+from model.project import Project
 import random
 
 
-def test_add_project(app):
-    if app.project.project_count() == 0:
-        app.project.create(Project(p_name="project for removing"))
-    old_project_list = app.project.get_projects_list()
-    project = random.choice(old_project_list)
-    app.project.delete_project_by_name(project.p_name)
-    new_project_list = app.project.get_projects_list()
-    old_project_list.remove(project)
-    assert old_project_list == new_project_list
+def test_delete_some_project(app):
+    if len(app.soap.get_projects()) == 0:
+        app.project.create_project(Project(name='test', description='test'))
+    old_projects = app.soap.get_projects()
+    project = random.choice(old_projects)
+    app.project.delete_project_by_name(project.name)
+    assert len(old_projects) - 1 == len(app.soap.get_projects())
+    new_projects = app.soap.get_projects()
+    old_projects.remove(project)
+    assert sorted(old_projects, key=Project.id_or_max) == sorted(new_projects, key=Project.id_or_max)

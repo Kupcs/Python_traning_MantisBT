@@ -2,23 +2,21 @@ from sys import maxsize
 
 
 class Project:
-    def __init__(self, id=None, p_name=None, status=None, view_status=None, description=None):
-        self.id = id
-        self.p_name = p_name
+    def __init__(self, name=None, status=None, view_state=None, description=None, id=None):
+        self.name = name
         self.status = status
-        self.view_status = view_status
+        self.view_state = view_state
         self.description = description
-
+        self.id = id
 
     def __repr__(self):
-        return f"ID: {self.id}, Name: {self.p_name}, Status: {self.status}, View_status: {self.view_status}," \
-               f"Description:{self.description}"
+        return "%s:%s;%s;%s;%s" % (self.id, self.name, self.status, self.view_state, self.description)
 
     def __eq__(self, other):
-       return self.p_name == other.p_name
+        return (self.id is None or other.id is None or self.id == other.id) and self.name == other.name
 
-    def id_or_max(pr):
-        if pr.id:
-            return int(pr.id)
+    def id_or_max(self):
+        if self.id:
+            return int(self.id)
         else:
             return maxsize

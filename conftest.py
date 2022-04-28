@@ -1,11 +1,10 @@
 import pytest
 import os.path
 from fixture.application import Application
-from fixture.db import DbFixture
 import json
 import importlib
-import jsonpickle
 import ftputil
+import jsonpickle
 
 fixture = None
 target = None
@@ -26,7 +25,7 @@ def config(request):
     return load_config(request.config.getoption("--target"))
 
 
-# по протоколу ftp подкладыаем конфиг файл на сервер, используя данные о сервере и учетке
+
 @pytest.fixture(scope="session", autouse=True)
 def configure_server(request, config):
     install_server_configuration(config['ftp']['host'], config['ftp']['username'], config['ftp']['password'])
@@ -35,7 +34,7 @@ def configure_server(request, config):
     request.addfinalizer(fin)
 
 
-# создаем соединение с ftp сервером
+# создаем соединение сервером
 def install_server_configuration(host, username, password):
     with ftputil.FTPHost(host, username, password) as remote:
         if remote.path.isfile("config_inc.php.bak"):
@@ -51,7 +50,6 @@ def restore_server_configuration(host, username, password):
             if remote.path.isfile("config_inc.php"):
                 remote.remove("config_inc.php")
             remote.rename("config_inc.php.bak", "config_inc.php")
-
 
 
 @pytest.fixture
@@ -74,23 +72,9 @@ def stop(request):
     return fixture
 
 
-
 def pytest_addoption(parser):
     parser.addoption("--browser", action="store", default="firefox")
     parser.addoption("--target", action="store", default="target.json")
-
-
-
-@pytest.fixture(scope='session')
-def db(request, config):
-    db_config = load_config(request.config.getoption("--target"))["db"]
-    dbfixture = DbFixture(host=db_config["host"], name=db_config["name"],
-                          user=db_config["user"], password=db_config["password"])
-    def fin():
-        dbfixture.destroy()
-    request.addfinalizer(fin)
-    return dbfixture
-
 
 
 def pytest_generate_tests(metafunc):
