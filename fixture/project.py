@@ -22,11 +22,12 @@ class ProjectHelper:
             wd.find_element_by_name(field_name).clear()
             wd.find_element_by_name(field_name).send_keys(text)
 
-    def create(self, project):
+    def create_project(self, project):
         wd = self.app.wd
         self.open_project_create_page()
         self.fill_project_form(project)
         wd.find_element_by_css_selector("input[value='Add Project']").click()
+        self.fill_project_form(project)
         wd.find_element_by_link_text("Manage Users")
         self.project_cache = None
 

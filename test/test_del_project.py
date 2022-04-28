@@ -1,4 +1,4 @@
-from model.project import Project
+
 from model.project import Project
 import random
 
