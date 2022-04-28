@@ -16,7 +16,7 @@ class Application:
         elif browser == "ie":
             self.wd = webdriver.Ie()
         else:
-            raise ValueError("Unrecognized browser %s" % browser)
+            raise ValueError(f"Unrecognized browser {browser}]")
         self.session = SessionHelper(self)
         self.project = ProjectHelper(self)
         self.james = JamesHelper(self)

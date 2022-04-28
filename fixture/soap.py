@@ -18,7 +18,6 @@ class SoapHelper:
         except WebFault:
             return False
 
-
     def get_projects(self):
         project_list = []
         soap_config = self.app.config["soap"]

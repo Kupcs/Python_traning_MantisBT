@@ -42,7 +42,7 @@ class ProjectHelper:
                 cells = element.find_elements_by_tag_name("td")
                 firstname_text = cells[0].text
                 discription_text = cells[4].text
-                self.project_cache.append(Project(p_name=firstname_text, description=discription_text, id=id))
+                self.project_cache.append(Project(name=firstname_text, description=discription_text, id=id))
         return list(self.project_cache)
 
     def project_count(self):
